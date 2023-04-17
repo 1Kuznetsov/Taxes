@@ -20,39 +20,33 @@ for num in range(12):
 property_t1 = float(input(ru.PROPERTY_T1))
 property_t2 = float(input(ru.PROPERTY_T2))
 property_t3 = float(input(ru.PROPERTY_T3))
-if resident:
-    t_tax += property_t1 * 0.001 + property_t2 * 0.02 + property_t3 * 0.005
-else:
-    t_tax += (property_t1 + property_t2) * 0.002 + property_t3 * 0.02
-
 rent = float(input(ru.RENT))
-if resident:
-    t_tax += 0.13 * rent
-else:
-    t_tax += 0.3 * rent
-
 investing = float(input(ru.INVESTING))
-
 deposits = float(input(ru.DEPOSIT))
 max_key_rate = float(input(ru.MAX_KEY_RATE))
-if deposits > 1_000_000 * max_key_rate:
-    t_tax += (deposits - 1_000_000 * max_key_rate) * 0.13
-
 prize = float(input(ru.PRIZE))
 prize_ad = float(input(ru.PRIZE_AD))
-
 estate = float(input(ru.ESTATE))
-if resident:
-    special = input(ru.SPECIAL).lower()
-    if special == "нет":
-        t_tax += 0.13 * estate
-else:
-    t_tax += 0.3 * estate
 
 t_income += t_salary + investing + deposits + prize + prize_ad
 t_income += estate + rent
 
-if days < 183:
+if deposits > 1_000_000 * max_key_rate:
+    t_tax += (deposits - 1_000_000 * max_key_rate) * 0.13
+
+if resident:
+    if t_income > 5_000_000:
+        t_tax += t_salary * 0.15
+    else:
+        t_tax += t_salary * 0.13
+    t_tax += property_t1 * 0.001 + property_t2 * 0.02 + property_t3 * 0.005
+    t_tax += 0.13 * rent
+    t_tax += (prize - 4000) * 0.13
+    t_tax += (prize_ad - 4000) * 0.35
+    special = input(ru.SPECIAL).lower()
+    if special == "нет":
+        t_tax += 0.13 * estate
+else:
     question_1 = input('Вы отсутствовали в стране по причинам прохождения лечения, n\
     обучения или исполнения за границей обязательств по трудовому договору? ')
     question_2 = input('Вы российский военнослужащий, который несет воинскую обязанность за границей n\
