@@ -52,27 +52,42 @@ if resident:
         t_tax += (estate + other_estate) * 0.13
     t_tax += foreign_income * 0.13
 else:
-    question_1 = input('Вы отсутствовали в стране по причинам прохождения лечения, n\
-    обучения или исполнения за границей обязательств по трудовому договору? ')
-    question_2 = input('Вы российский военнослужащий, который несет воинскую обязанность за границей n\
-    или сотрудник органов власти в командировке за пределами РФ? ')
+    question_1 = input('''Вы отсутствовали в стране по причинам прохождения лечения,
+    обучения или исполнения за границей обязательств по трудовому договору? ''')
+    question_2 = input('''Вы российский военнослужащий, который несет воинскую обязанность за границей
+    или сотрудник органов власти в командировке за пределами РФ? ''')
     if question_1.lower() == 'нет' and question_2.lower() == 'нет':
         print("Вы нерезидент, налоговые вычеты не предоставляются")
-    dividends = input('Получали ли Вы дивиденды? ')
+    if question_1.lower() == 'да' and question_2.lower() == 'да':
+        print(f'Вы резидент, Ваш налог составляет {t_income}')
+    dividends = input('Получали ли Вы дивиденды от долевого участия в деятельности российских организаций? ')
     if dividends.lower() == 'да':
         n_div = float(input('Какой доход от дивидентов? '))
         tax_dividends = n_div * 0.15
     else:
         tax_dividends = 0
     tax_dep = 0
-    if max_key_rate * 10000 < deposits:
+    if max_key_rate * 10_000 < deposits:
         tax_dep = 0
     else:
         tax_dep += deposits * 0.13
     property_non_resident = property_t1 + property_t2 + property_t3 + estate
-    tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3
-    tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
-    print(f'Ваш налог составляет {tax_non_resident}')
+    question_3 = input("Работаете ли Вы по патенту? ")
+    question_4 = input("Являетесь ли Вы высококвалификационным работником? ")
+    question_5 = input('''Являетесь ли Вы гражданином государств-членов ЕАЭС 
+    (Беларуси, Казахстана, Киргизии, Армении)? ''')
+    question_6 = input('''Вы участник Госпрограммы по оказанию содействия добровольному переселению в РФ
+    соотечественников, проживающих за рубежом, а также членов их семей? ''')
+    question_7 = input("Вы член экипажа судов, плавающих по Государственным флагом РФ? ")
+    question_8 = input("Являетесь ли Вы беженцем или получившим временное убежище в РФ? ")
+    if question_3.lower() == 'нет' or question_4.lower() == 'нет' or question_5.lower() == 'нет' or question_6.lower() == 'нет' or question_7.lower() == 'нет' or question_8.lower() == 'нет':
+        tax_non_resident_1 = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3
+        tax_non_resident_1 += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
+        print(f'Ваш налог составляет {tax_non_resident_1}')
+    else:
+        tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.13
+        tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
+        print(f'Ваш налог составляет {tax_non_resident}')
 
 education_child = float(input(ru.EDUCATION_CHILD))
 edu_sibling_own = float(input(ru.EDU_SIBLING_OWN))
@@ -98,3 +113,50 @@ if social <= 120000:
     stoppage += social * 0.13
 else:
     stoppage += 120000 * 0.13
+
+d = 0
+deductions_1 = input('''Вы относитесь к льготной категории граждан или к лицам, 
+на обеспечении которых находятся дети? ''')
+if deductions_1.lower() == 'да' and days >= 183:
+    print('У Вас могут быть вычеты')
+    q_1 = input('Вы относитесь к 1-ой категории? ')
+    q_2 = input('Вы относитесь ко 2-ой категории? ')
+    if q_1.lower() == 'да':
+        d += 3000
+    else:
+        d = 0
+    if q_2.lower() == 'да':
+        d += 500
+    else:
+        d = 0
+    q_3 = input('''Вы являетесь родителем, супругом (супругой) родителя,
+    усыновителем, на обеспечении которого находится ребенок? ''')
+    if q_3.lower() == 'да':
+        q_4 = input('Начиная с месяца, указанный доход превысил 350 000 рублей? ')
+        q_7 = int(input('Сколько детей в Вашей семье?'))
+        if q_4.lower() == 'да':
+            print('Налоговый вычет, предусмотренный настоящим подпунктом, не применяется')
+        if q_4.lower() == 'нет':
+            q_5 = input('''Вашему ребенку до 18 лет и является ребенком-инвалидом
+            или является учащимся очной формы обучения, аспирантом, ординатором, интерном, студентом в возрасте до 24 лет,
+            или  он является инвалидом I или II группы? ''')
+            if q_5.lower() == 'да':
+                d += 12000 * q_7
+            if q_5.lower() == 'нет':
+                if q_7 == 1 or q_7 == 2:
+                    d += 1400
+                if q_7 >= 3:
+                    d += 3000
+                    print(f'Ваш вычет для льготных категорий граждан, а также лиц, на обеспечении которых находятся детисоставляет {d}')
+    if q_3.lower() == 'нет':
+        q_5 = input('''Вашему ребенку до 18 лет и является ребенком-инвалидом
+        или является учащимся очной формы обучения, аспирантом, ординатором, интерном, студентом в возрасте до 24 лет, 
+        или  он является инвалидом I или II группы? ''')
+        if q_5.lower() == 'да':
+            d += 6000 * q_7
+        if q_5.lower() == 'нет':
+            if q_7 == 1 or q_7 == 2:
+                d += 1400
+            if q_7 >= 3:
+                d += 3000
+                print(f'Ваш вычет для льготных категорий граждан, а также лиц, на обеспечении которых находятся детисоставляет {d}')
