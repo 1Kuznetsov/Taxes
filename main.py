@@ -5,6 +5,7 @@ import ru_local as ru
 t_salary = 0
 t_tax = 0
 t_income = 0
+stoppage = 0
 month = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
          "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
 
@@ -27,6 +28,7 @@ max_key_rate = float(input(ru.MAX_KEY_RATE))
 prize = float(input(ru.PRIZE))
 prize_ad = float(input(ru.PRIZE_AD))
 estate = float(input(ru.ESTATE))
+other_estate = float(input(ru.OTHER_ESTATE))
 foreign_income = float(input(ru.FOREIGN_INCOME))
 
 t_income += t_salary + investing + deposits + prize + prize_ad
@@ -47,6 +49,7 @@ if resident:
     special = input(ru.SPECIAL).lower()
     if special == "нет":
         t_tax += 0.13 * estate
+    t_tax += other_estate * 0.13
     t_tax += foreign_income * 0.13
 else:
     question_1 = input('Вы отсутствовали в стране по причинам прохождения лечения, n\
@@ -70,3 +73,11 @@ else:
     tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3
     tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
     print(f'Ваш налог составляет {tax_non_resident}')
+
+education = float(input(ru.EDUCATION))
+charity = float(input(ru.CHARITY))
+cure = float(input(ru.CURE))
+pension = float(input(ru.PENSION))
+insurance = float(input(ru.INSURANCE))
+phys_cult_health = float(input(ru.PHYS_CULT_HEALTH))
+buy_build = float(input(ru.BUY_BUILD))
