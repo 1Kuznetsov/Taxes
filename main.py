@@ -65,11 +65,12 @@ if days < 183:
         tax_dividends = n_div * 0.15
     else:
         tax_dividends = 0
-    tax_non_resident = 0
+    tax_dep = 0
     if max_key_rate * 10000 < deposits:
-        tax_non_resident = 0
+        tax_dep = 0
     else:
-        tax_non_resident += deposits * 0.13
+        tax_dep += deposits * 0.13
     property_non_resident = property_t1 + property_t2 + property_t3 + estate
-    tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3 + tax_dividends + property_non_resident * 0.2 * 0.01 + tax_non_resident
+    tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3
+    tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
     print(f'Ваш налог составляет {tax_non_resident}')
