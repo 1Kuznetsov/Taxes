@@ -53,13 +53,13 @@ t_income += t_salary + investing + deposits + prize + prize_ad
 t_income += estate + rent
 
 if days < 183:
-    question_1 = input('Вы отсутствовали в стране по причинам прохождения лечения, n\
-    обучения или исполнения за границей обязательств по трудовому договору? ')
-    question_2 = input('Вы российский военнослужащий, который несет воинскую обязанность за границей n\
-    или сотрудник органов власти в командировке за пределами РФ? ')
+    question_1 = input("Вы отсутствовали в стране по причинам прохождения лечения, обучения или исполнения за границей обязательств по трудовому договору? ")
+    question_2 = input("Вы российский военнослужащий, который несет воинскую обязанность за границей или сотрудник органов власти в командировке за пределами РФ? ")
     if question_1.lower() == 'нет' and question_2.lower() == 'нет':
         print("Вы нерезидент, налоговые вычеты не предоставляются")
-    dividends = input('Получали ли Вы дивиденды? ')
+    if question_1.lower() == 'да' and question_2.lower() == 'да':
+        print(f'Вы резидент, Ваш налог составляет {t_income}')
+    dividends = input('Получали ли Вы дивиденды от долевого участия в деятельности российских организаций? ')
     if dividends.lower() == 'да':
         n_div = float(input('Какой доход от дивидентов? '))
         tax_dividends = n_div * 0.15
@@ -71,6 +71,16 @@ if days < 183:
     else:
         tax_dep += deposits * 0.13
     property_non_resident = property_t1 + property_t2 + property_t3 + estate
-    tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3
-    tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
+    question_3 = input("Работаете ли Вы по патенту? ")
+    question_4 = input("Являетесь ли Вы высококвалификационным работником? ")
+    question_5 = input("Являетесь ли Вы гражданином государств-членов ЕАЭС (Беларуси, Казахстана, Киргизии, Армении)? ")
+    question_6 = input("Вы частник Госпрограммы по оказанию содействия добровольному переселению в РФ соотечественников, проживающих за рубежом, а также членов их семей? ")
+    question_7 = input("Вы член экипажа судов, плавающих по Государственным флагом РФ? ")
+    question_8 = input("Являетесь ли Вы беженцом или получившим временное убежище в РФ? ")
+    if question_3.lower() == 'нет' and question_4.lower() == 'нет' and question_5.lower() == 'нет' and question_6.lower() == 'нет' and question_7.lower() == 'нет' and question_8.lower() == 'нет':
+        tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3
+        tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
+    if question_3.lower() == 'да' and question_4.lower() == 'да' and question_5.lower() == 'да' and question_6.lower() == 'да' and question_7.lower() == 'да' and question_8.lower() == 'да':
+        tax_non_resident = (investing + t_salary + rent + estate + prize_ad + prize) * 0.13
+        tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
     print(f'Ваш налог составляет {tax_non_resident}')
