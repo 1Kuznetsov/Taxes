@@ -160,3 +160,43 @@ if deductions_1.lower() == 'да' and days >= 183:
             if q_7 >= 3:
                 d += 3000
                 print(f'Ваш вычет для льготных категорий граждан, а также лиц, на обеспечении которых находятся дети составляет {d}')
+
+q_8 = input('Вы инвестируете? ')
+if q_8.lower() == 'да':
+    print('Будем считать вычет в размере дохода, полученного от продажи ценных бумаг (1) или вычеты по ИИС (2)')
+    opt = int(input('Выберите вариант ответа (1 или 2) '))
+    if opt == 1:
+        income_investments_1 = input('''Ваши ценные бумаги, обращающиеся на российских биржах,
+        либо паи открытых ПИФов под управлением отечественных компаний? ''')
+        if income_investments_1.lower() == 'да':
+            qs_1 = input('Ваш доход облагается НДФЛ? ')
+            if qs_1.lower() == 'нет':
+                qs_2 = input('Активы находятся в собственности непрерывно более 3 лет? ')
+                qs_3 = int(input('Сколько лет Вы владеете этими акциями? '))
+                profit_securities = float(input('Ваша прибыль от ценных бумаг: '))
+                if qs_2.lower() == 'да':
+                    if profit_securities * 0.13 >= 3_000_000:
+                        print('Вычет составит {3_000_000 * qs_3}')
+                    if profit_securities * 0.13 < 3_000_000:
+                        print('Вычет составит {profit_securities * 0.13}')
+                if qs_2.lower() == 'нет':
+                    print('Вычета нет')
+            if qs_1.lower() == 'да':
+                print('Вычета нет')
+        if income_investments_1.lower() == 'нет':
+            print('Вычета нет')
+    if opt == 2:
+        tax_paid = float(input('Ваш налог равен '))
+        personal_income_tax = int(input('Сколько процентов НДФЛ Вы платите? '))
+        income = float(input('Ваш доход: '))
+        replenishment = float(input('Сумма пополнения на ИИС: '))
+        if tax_paid > replenishment * 0.13:
+            print(f'Налоговый вычет по ИИС составляет 52_000')
+        if tax_paid < replenishment * 0.13:
+            print(f'Налоговый вычет по ИИС составляет {replenishment * 0.13}')
+        if income >= 5_000_000 and personal_income_tax == 15:
+            print(f'Налоговый вычет по ИИС составляет 60_000')
+    else:
+        print('Такого варианта нет')
+if q_8.lower() == 'нет':
+    print('Инвестиционные налоговые вычеты равны 0')
