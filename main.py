@@ -27,6 +27,7 @@ max_key_rate = float(input(ru.MAX_KEY_RATE))
 prize = float(input(ru.PRIZE))
 prize_ad = float(input(ru.PRIZE_AD))
 estate = float(input(ru.ESTATE))
+foreign_income = float(input(ru.FOREIGN_INCOME))
 
 t_income += t_salary + investing + deposits + prize + prize_ad
 t_income += estate + rent
@@ -36,9 +37,9 @@ if deposits > 1_000_000 * max_key_rate:
 
 if resident:
     if t_income > 5_000_000:
-        t_tax += t_salary * 0.15
+        t_tax += (t_salary + investing) * 0.15
     else:
-        t_tax += t_salary * 0.13
+        t_tax += (t_salary + investing) * 0.13
     t_tax += property_t1 * 0.001 + property_t2 * 0.02 + property_t3 * 0.005
     t_tax += 0.13 * rent
     t_tax += (prize - 4000) * 0.13
@@ -46,6 +47,7 @@ if resident:
     special = input(ru.SPECIAL).lower()
     if special == "нет":
         t_tax += 0.13 * estate
+    t_tax += foreign_income * 0.13
 else:
     question_1 = input('Вы отсутствовали в стране по причинам прохождения лечения, n\
     обучения или исполнения за границей обязательств по трудовому договору? ')
