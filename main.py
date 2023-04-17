@@ -6,6 +6,7 @@ t_salary = 0
 t_tax = 0
 t_income = 0
 stoppage = 0
+t_stoppage = 0
 month = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
          "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
 
@@ -48,8 +49,7 @@ if resident:
     t_tax += (prize_ad - 4000) * 0.35
     special = input(ru.SPECIAL).lower()
     if special == "нет":
-        t_tax += 0.13 * estate
-    t_tax += other_estate * 0.13
+        t_tax += (estate + other_estate) * 0.13
     t_tax += foreign_income * 0.13
 else:
     question_1 = input('Вы отсутствовали в стране по причинам прохождения лечения, n\
@@ -74,10 +74,27 @@ else:
     tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
     print(f'Ваш налог составляет {tax_non_resident}')
 
-education = float(input(ru.EDUCATION))
+education_child = float(input(ru.EDUCATION_CHILD))
+edu_sibling_own = float(input(ru.EDU_SIBLING_OWN))
 charity = float(input(ru.CHARITY))
 cure = float(input(ru.CURE))
 pension = float(input(ru.PENSION))
 insurance = float(input(ru.INSURANCE))
 phys_cult_health = float(input(ru.PHYS_CULT_HEALTH))
 buy_build = float(input(ru.BUY_BUILD))
+losses = float(input(ru.LOSSES))
+if 0 < education_child <= 50000:
+    child = education_child * 0.13
+else:
+    child = 50000 * 0.13
+
+if charity >= t_income * 0.25 :
+    char = charity
+else:
+    char = 0.25 * t_income
+
+social = edu_sibling_own + cure + pension + insurance + phys_cult_health + char
+if social <= 120000:
+    stoppage += social * 0.13
+else:
+    stoppage += 120000 * 0.13
