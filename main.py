@@ -4,9 +4,7 @@ import ru_local as ru
 
 t_salary = 0
 t_tax = 0
-t_income = 0
 stoppage = 0
-t_stoppage = 0
 month = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
          "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
 
@@ -32,7 +30,7 @@ estate = float(input(ru.ESTATE))
 other_estate = float(input(ru.OTHER_ESTATE))
 foreign_income = float(input(ru.FOREIGN_INCOME))
 
-t_income += t_salary + investing + deposits + prize + prize_ad
+t_income = t_salary + investing + deposits + prize + prize_ad
 t_income += estate + rent
 
 if deposits > 1_000_000 * max_key_rate:
@@ -89,30 +87,78 @@ else:
         tax_non_resident += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
         print(f'Ваш налог составляет {tax_non_resident}')
 
-education_child = float(input(ru.EDUCATION_CHILD))
-edu_sibling_own = float(input(ru.EDU_SIBLING_OWN))
-charity = float(input(ru.CHARITY))
-cure = float(input(ru.CURE))
-pension = float(input(ru.PENSION))
-insurance = float(input(ru.INSURANCE))
-phys_cult_health = float(input(ru.PHYS_CULT_HEALTH))
-buy_build = float(input(ru.BUY_BUILD))
-losses = float(input(ru.LOSSES))
-if 0 < education_child <= 50000:
-    child = education_child * 0.13
-else:
-    child = 50000 * 0.13
-
-if charity >= t_income * 0.25 :
-    char = charity
-else:
-    char = 0.25 * t_income
-
-social = edu_sibling_own + cure + pension + insurance + phys_cult_health + char
-if social <= 120000:
-    stoppage += social * 0.13
-else:
-    stoppage += 120000 * 0.13
+if resident:
+    education_child = float(input(ru.EDUCATION_CHILD))
+    edu_sibling_own = float(input(ru.EDU_SIBLING_OWN))
+    charity = float(input(ru.CHARITY))
+    cure = float(input(ru.CURE))
+    pension = float(input(ru.PENSION))
+    insurance = float(input(ru.INSURANCE))
+    phys_cult_health = float(input(ru.PHYS_CULT_HEALTH))
+    buy_build = float(input(ru.BUY_BUILD))
+    losses = float(input(ru.LOSSES))
+    if 0 < education_child <= 50_000:
+        if education_child <= t_tax:
+            child = education_child * 0.13
+        else:
+            child = t_tax * 0.13
+    else:
+        if t_tax >= 50_000:
+            child = 50_000 * 0.13
+        else:
+            child = t_tax * 0.13
+    stoppage += child
+    if charity >= t_income * 0.25:
+        char = charity
+    else:
+        char = 0.25 * t_income
+    social = edu_sibling_own + cure + pension + insurance + phys_cult_health + char
+    if social <= 120_000:
+        if social <= t_tax:
+            stoppage += social * 0.13
+        else:
+            stoppage += t_tax * 0.13
+    else:
+        if t_tax >= 120_000:
+            stoppage += 120_000 * 0.13
+        else:
+            stoppage += t_tax * 0.13
+    if buy_build > 0:
+        received = float(input(ru.RECEIVED))
+        if buy_build <= 2_000_000:
+            if buy_build * 0.13 <= 260_000 - received:
+                stoppage += buy_build * 0.13
+            else:
+                stoppage += 260_000 - received
+        else:
+            if received == 0:
+                stoppage += 260_000
+            else:
+                stoppage += 260_000 - received
+    if estate != 0 and estate > 1_000_000:
+        expenses = float(input(ru.EXPENSES))
+        estate_1 = 1_000_000 * 0.13
+        estate_2 = expenses * 0.13
+        if estate_1 >= estate_2:
+            stoppage += estate_1
+        else:
+            stoppage += estate_2
+    else:
+        stoppage += estate * 0.13
+    if other_estate != 0 and other_estate > 250_000:
+        expenses_other = float(input(ru.EXPENSES_OTHER))
+        estate_other_1 = 250_000 * 0.13
+        estate_other_2 = expenses_other * 0.13
+        if estate_other_1 >= estate_other_2:
+            stoppage += estate_other_1
+        else:
+            stoppage += estate_other_2
+    else:
+        stoppage += other_estate * 0.13
+    if losses > investing:
+        stoppage += investing * 0.13
+    else:
+        stoppage += losses * 0.13
 
 d = 0
 deductions_1 = input('''Вы относитесь к льготной категории граждан или к лицам, 
@@ -203,3 +249,8 @@ if q_8.lower() == 'да' and days >= 183:
         print('Такого варианта нет')
 if q_8.lower() == 'нет':
     print('Инвестиционные налоговые вычеты равны 0')
+
+total_stoppage = stoppage + d
+print(f"Ваш доход за год составил {t_income} руб.")
+print(f"НДФЛ за год составил {t_tax} руб.")
+print(f"Налоговый вычет за год составит {total_stoppage} руб.")
