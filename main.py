@@ -58,7 +58,7 @@ else:
         print(f'Вы резидент, Ваш налог составляет {t_income}')
     dividends = input(ru.DIVIDENTS)
     if dividends.lower() == 'да':
-        n_div = float(input(N_DIV))
+        n_div = float(input(ru.N_DIV))
         tax_dividends = n_div * 0.15
     else:
         tax_dividends = 0
@@ -68,14 +68,12 @@ else:
     else:
         tax_dep += deposits * 0.13
     property_non_resident = property_t1 + property_t2 + property_t3 + estate
-    question_3 = input("Работаете ли Вы по патенту? ")
-    question_4 = input("Являетесь ли Вы высококвалификационным работником? ")
-    question_5 = input('''Являетесь ли Вы гражданином государств-членов ЕАЭС 
-    (Беларуси, Казахстана, Киргизии, Армении)? ''')
-    question_6 = input('''Вы участник Госпрограммы по оказанию содействия добровольному переселению в РФ
-    соотечественников, проживающих за рубежом, а также членов их семей? ''')
-    question_7 = input("Вы член экипажа судов, плавающих по Государственным флагом РФ? ")
-    question_8 = input("Являетесь ли Вы беженцем или получившим временное убежище в РФ? ")
+    question_3 = input(ru.QUESTION_3)
+    question_4 = input(ru.QUESTION_4)
+    question_5 = input(ru.QUESTION_5)
+    question_6 = input(ru.QUESTION_6)
+    question_7 = input(ru.QUESTION_7)
+    question_8 = input(ru.QUESTION_8)
     if question_3.lower() == 'нет' or question_4.lower() == 'нет' or question_5.lower() == 'нет' or question_6.lower() == 'нет' or question_7.lower() == 'нет' or question_8.lower() == 'нет':
         tax_non_resident_1 = (investing + t_salary + rent + estate + prize_ad + prize) * 0.3
         tax_non_resident_1 += tax_dividends + property_non_resident * 0.2 * 0.01 + tax_dep
@@ -159,12 +157,11 @@ if resident:
         stoppage += losses * 0.13
 
 d = 0
-deductions_1 = input('''Вы относитесь к льготной категории граждан или к лицам, 
-на обеспечении которых находятся дети? ''')
+deductions_1 = input(ru.DEDUCTION_1)
 if deductions_1.lower() == 'да' and days >= 183:
     print('У Вас могут быть вычеты')
-    q_1 = input('Вы относитесь к 1-ой категории? ')
-    q_2 = input('Вы относитесь ко 2-ой категории? ')
+    q_1 = input(ru.Q_1)
+    q_2 = input(ru.Q_2)
     if q_1.lower() == 'да':
         d += 3000
     else:
@@ -173,17 +170,14 @@ if deductions_1.lower() == 'да' and days >= 183:
         d += 500
     else:
         d = 0
-    q_3 = input('''Вы являетесь родителем, супругом (супругой) родителя,
-    усыновителем, на обеспечении которого находится ребенок? ''')
+    q_3 = input(ru.Q_3)
     if q_3.lower() == 'да':
-        q_4 = input('Начиная с месяца, указанный доход превысил 350 000 рублей? ')
-        q_7 = int(input('Сколько детей в Вашей семье?'))
+        q_4 = input(ru.Q_4)
+        q_7 = int(input(ru.Q_7))
         if q_4.lower() == 'да':
             print('Налоговый вычет, предусмотренный настоящим подпунктом, не применяется')
         if q_4.lower() == 'нет':
-            q_5 = input('''Вашему ребенку до 18 лет и является ребенком-инвалидом
-            или является учащимся очной формы обучения, аспирантом, ординатором, интерном, студентом в возрасте до 24 лет,
-            или  он является инвалидом I или II группы? ''')
+            q_5 = input(ru.Q_5)
             if q_5.lower() == 'да':
                 d += 12000 * q_7
             if q_5.lower() == 'нет':
@@ -193,33 +187,31 @@ if deductions_1.lower() == 'да' and days >= 183:
                     d += 3000
                     print(f'Ваш вычет для льготных категорий граждан, а также лиц, на обеспечении которых находятся дети составляет {d}')
     if q_3.lower() == 'нет':
-        q_5 = input('''Вашему ребенку до 18 лет и является ребенком-инвалидом
-        или является учащимся очной формы обучения, аспирантом, ординатором, интерном, студентом в возрасте до 24 лет, 
-        или  он является инвалидом I или II группы? ''')
+        q_5 = input(ru.Q_5)
         if q_5.lower() == 'да':
-            d += 6000 * q_7
+            q_7 = int(input(ru.Q_7))
+            d = d + 6000 * q_7
         if q_5.lower() == 'нет':
+            q_7 = int(input(ru.Q_7))
             if q_7 == 1 or q_7 == 2:
                 d += 1400
             if q_7 >= 3:
                 d += 3000
                 print(f'Ваш вычет для льготных категорий граждан, а также лиц, на обеспечении которых находятся дети составляет {d}')
 
-q_8 = input('''Являетесь ли Вы лицом, совершающим операции по ИИС
-и получающим доходы от реализации ценных бумаг, обращающихся на ОРЦБ? ''')
+q_8 = input(ru.Q_8)
 if q_8.lower() == 'да' and days >= 183:
     print('''Будем считать вычет в размере дохода, полученного от продажи ценных бумаг (1)
     или вычеты по ИИС (2)''')
-    opt = int(input('Выберите вариант ответа (1 или 2) '))
+    opt = int(input(ru.OPT))
     if opt == 1:
-        income_investments_1 = input('''Ваши ценные бумаги, обращающиеся на российских биржах,
-        либо паи открытых ПИФов под управлением отечественных компаний? ''')
+        income_investments_1 = input(ru.INCOME_INVESTMENTS_1)
         if income_investments_1.lower() == 'да':
-            qs_1 = input('Ваш доход облагается НДФЛ? ')
+            qs_1 = input(ru.QS_1)
             if qs_1.lower() == 'нет':
-                qs_2 = input('Активы находятся в собственности непрерывно более 3 лет? ')
-                qs_3 = int(input('Сколько лет Вы владеете этими акциями? '))
-                profit_securities = float(input('Ваша прибыль от ценных бумаг: '))
+                qs_2 = input(ru.QS_2)
+                qs_3 = int(input(ru.QS_3))
+                profit_securities = float(input(ru.PROFIT_SECURITIES))
                 if qs_2.lower() == 'да':
                     if profit_securities * 0.13 >= 3_000_000:
                         print('Вычет составит {3_000_000 * qs_3}')
@@ -233,10 +225,10 @@ if q_8.lower() == 'да' and days >= 183:
         if income_investments_1.lower() == 'нет':
             print('Вычета нет')
     if opt == 2:
-        tax_paid = float(input('Ваш налог равен '))
-        personal_income_tax = int(input('Сколько процентов НДФЛ Вы платите? '))
-        income = float(input('Ваш доход: '))
-        replenishment = float(input('Сумма пополнения на ИИС: '))
+        tax_paid = float(input(ru.TAX_PAID))
+        personal_income_tax = int(input(ru.PERSONAL_INCOME_TAX))
+        income = float(input(ru.INCOME))
+        replenishment = float(input(ru.REPLENISHMENT))
         if tax_paid > replenishment * 0.13:
             print(f'Налоговый вычет по ИИС составляет 52_000')
         if tax_paid < replenishment * 0.13:
