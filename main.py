@@ -108,7 +108,8 @@ if resident:
         char = charity
     else:
         char = 0.25 * t_income
-    social = edu_sibling_own + cure + pension + insurance + phys_cult_health + char
+    social = edu_sibling_own + cure + pension
+    social += insurance + phys_cult_health + char
     if social <= 120_000:
         if social <= t_tax:
             stoppage += social * 0.13
