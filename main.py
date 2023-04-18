@@ -50,17 +50,15 @@ if resident:
         t_tax += (estate + other_estate) * 0.13
     t_tax += foreign_income * 0.13
 else:
-    question_1 = input('''Вы отсутствовали в стране по причинам прохождения лечения,
-    обучения или исполнения за границей обязательств по трудовому договору? ''')
-    question_2 = input('''Вы российский военнослужащий, который несет воинскую обязанность за границей
-    или сотрудник органов власти в командировке за пределами РФ? ''')
+    question_1 = input(ru.QUESTION_1)
+    question_2 = input(ru.QUESTION_2)
     if question_1.lower() == 'нет' and question_2.lower() == 'нет':
         print("Вы нерезидент, налоговые вычеты не предоставляются")
     if question_1.lower() == 'да' and question_2.lower() == 'да':
         print(f'Вы резидент, Ваш налог составляет {t_income}')
-    dividends = input('Получали ли Вы дивиденды от долевого участия в деятельности российских организаций? ')
+    dividends = input(ru.DIVIDENTS)
     if dividends.lower() == 'да':
-        n_div = float(input('Какой доход от дивидентов? '))
+        n_div = float(input(N_DIV))
         tax_dividends = n_div * 0.15
     else:
         tax_dividends = 0
